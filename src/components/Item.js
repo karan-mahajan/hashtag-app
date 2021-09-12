@@ -24,7 +24,6 @@ const Item = ({ item, changeItems, items, setItems }) => {
         let newValue = [...hash, e.target.hash];
         setHash(newValue);
         console.log(hash);
-        const newValue = items.filter((val) => val.text.includes())
     }
 
 
