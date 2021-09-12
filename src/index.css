@@ -63,7 +63,7 @@ body {
 
 .item.completed {
   border-left: 5px solid green;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .task h3 {

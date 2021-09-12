@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 function App() {
   //Initialized the State
   const [items, setItems] = useState([]);
+  const [originalItems, setOriginalItems] = useState([]);
   const [itemId, setItemId] = useState(1);
   const [completedItems, setCompletedItems] = useState([]);
 
@@ -33,20 +34,24 @@ function App() {
     const newItem = { progress, itemId, text: addedItem, ...value };
     const sortedItems = [...items, newItem].sort((a, b) => b.itemId - a.itemId);
     setItems(sortedItems);
+    setOriginalItems(sortedItems);
     sessionStorage.setItem('mydata', JSON.stringify(sortedItems));
   }
 
   //Updated the List cards
   const changeItems = (id) => {
     const completed = items.find((val) => val.itemId === id);
-    if (!completed?.progress) {
-      const filtered = items.filter((val) => val.itemId !== id);
-      const updatedItem = { ...completed, 'progress': true };
-      const checkedItems = [...completedItems, updatedItem];
-      setCompletedItems(checkedItems);
-      setItems(filtered);
-      sessionStorage.setItem('mydata', JSON.stringify(filtered));
-      sessionStorage.setItem('completed', JSON.stringify(checkedItems));
+    if (completed) {
+      if (!completed?.progress) {
+        const filtered = items.filter((val) => val.itemId !== id);
+        const updatedItem = { ...completed, 'progress': true };
+        const checkedItems = [...completedItems, updatedItem];
+        setCompletedItems(checkedItems);
+        setItems(filtered);
+        setOriginalItems(filtered);
+        sessionStorage.setItem('mydata', JSON.stringify(filtered));
+        sessionStorage.setItem('completed', JSON.stringify(checkedItems));
+      }
     }
   }
 

@@ -7,31 +7,25 @@ hashtag(linkify);
 
 
 const Item = ({ item, changeItems, items, setItems }) => {
-    const [selectedHash, setSelectedHash] = useState([]);
+    const [hash, setHash] = useState([]);
     const createLinks = (content) => {
-        const linkifyOptions =
-        {
-            onClick: (event) => {
-                // console.log(selectedHash);
-                // const value = [...selectedHash, event.target.hash];
-                // console.log(value);
-                func1(event.target.hash);
-                // const filteredTasks = items?.filter((item) => {
-                //     item.text.includes();
-                // });
-                // setItems(filteredTasks);
-                // console.log(value);
-            }
-        }
-        return <Linkify options={{ attributes: linkifyOptions }}>{content}</Linkify>;
+        // const linkifyOptions =
+        // {
+        //     onClick: (event) => {
+        //         // console.log(value);
+        //     }
+        //options={{ attributes: linkifyOptions }}
+        // }
+        return <Linkify onClick={storeHash}>{content}</Linkify>;
     }
 
-    const func1 = (hash) => {
-        const hashTags = [...selectedHash];
-        hashTags.push(hash);
-        setSelectedHash(hashTags);
+    const storeHash = (e) => {
+        e.preventDefault();
+        let newValue = [...hash, e.target.hash];
+        setHash(newValue);
+        console.log(hash);
+        const newValue = items.filter((val) => val.text.includes())
     }
-
 
 
     return (
