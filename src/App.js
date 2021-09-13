@@ -8,7 +8,6 @@ import { useState, useEffect } from 'react';
 function App() {
   //Initialized the State
   const [items, setItems] = useState([]);
-  const [originalItems, setOriginalItems] = useState([]);
   const [itemId, setItemId] = useState(1);
   const [completedItems, setCompletedItems] = useState([]);
 
@@ -16,9 +15,6 @@ function App() {
     const repl = text.replace(/#(\w+)/g, '<a href="#">#$1</a>');
     return repl;
   }
-
-
-
   //Adding in the list
   const addItem = (value) => {
     const sessionId = parseInt(sessionStorage.getItem('itemId'));
@@ -31,10 +27,10 @@ function App() {
 
     }
     const progress = false;
+    // console.log("value", value);
     const newItem = { progress, itemId, text: addedItem, ...value };
     const sortedItems = [...items, newItem].sort((a, b) => b.itemId - a.itemId);
     setItems(sortedItems);
-    setOriginalItems(sortedItems);
     sessionStorage.setItem('mydata', JSON.stringify(sortedItems));
   }
 
@@ -48,7 +44,6 @@ function App() {
         const checkedItems = [...completedItems, updatedItem];
         setCompletedItems(checkedItems);
         setItems(filtered);
-        setOriginalItems(filtered);
         sessionStorage.setItem('mydata', JSON.stringify(filtered));
         sessionStorage.setItem('completed', JSON.stringify(checkedItems));
       }

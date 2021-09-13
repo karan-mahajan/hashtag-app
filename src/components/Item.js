@@ -1,36 +1,39 @@
-import { React, useState } from 'react';
-import Linkify from 'linkifyjs/react';
-import * as linkify from 'linkifyjs';
-import hashtag from 'linkifyjs/plugins/hashtag';
-
-hashtag(linkify);
+import { React, useState, useEffect } from 'react';
 
 
 const Item = ({ item, changeItems, items, setItems }) => {
-    const [hash, setHash] = useState([]);
-    const createLinks = (content) => {
-        // const linkifyOptions =
-        // {
-        //     onClick: (event) => {
-        //         // console.log(value);
-        //     }
-        //options={{ attributes: linkifyOptions }}
-        // }
-        return <Linkify onClick={storeHash}>{content}</Linkify>;
-    }
+    const [itemValue, setItemValue] = useState('');
+    useEffect(() => {
+        let str = item.text;
+        let len = str.length;
+        let hashFound = 0;
+        for (let index = 0; index < len; index++) {
+            if (str[index] === '#') {
+                if (str[index + 1] !== ' ') {
+                    hashFound = 1;
+                    str = [str.slice(0, index), "<b>", str.slice(index)].join('');
+                    index += 3
+                }
+            }
 
-    const storeHash = (e) => {
-        e.preventDefault();
-        let newValue = [...hash, e.target.hash];
-        setHash(newValue);
-        console.log(hash);
-    }
+            if (hashFound === 1 && str[index] === ' ') {
+                console.log(index)
+                str = [str.slice(0, index), "</b>", str.slice(index)].join('');
+                index += 3
+                hashFound = 0;
+            }
 
+            len = str.length
+        }
 
+        if (hashFound === 1) {
+            str = [str.slice(0, len), "</b>", str.slice(len)].join('');
+        }
+        setItemValue(str);
+    }, [item]);
     return (
         <>
-            <div className={`item ${item?.progress ? 'completed' : ''}`} onClick={() => changeItems(item.itemId)}>
-                {createLinks(item.text)}
+            <div className={`item ${item?.progress ? 'completed' : ''}`} onClick={() => changeItems(item.itemId)} dangerouslySetInnerHTML={{ __html: itemValue }}>
             </div>
         </>
     )
